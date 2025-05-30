@@ -1,0 +1,228 @@
+/* Import Google Fonts: Source Serif Pro for headings, Open Sans for body */
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Source+Serif+Pro:wght@400;600;700&display=swap");
+
+/* Global styles for a formal, professional look with Bootstrap compatibility */
+:root {
+  --bs-primary-background: #ffffff !important; /* Clean white background */
+  --bs-primary-foreground: #1a2526 !important; /* Deep charcoal for text */
+  --bs-accent-color: #003087 !important; /* Formal navy blue for accents */
+  --bs-secondary-background: #f5f6f5 !important; /* Light neutral for secondary elements */
+  --bs-border-color: #d1d5db !important; /* Subtle gray for borders */
+  --bs-font-family-body: "Open Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif !important;
+  --bs-font-family-heading: "Source Serif Pro", serif !important; /* Formal serif for headings */
+  --bs-transition: all 0.3s ease-in-out !important; /* Smooth transitions */
+  --bs-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1) !important; /* Subtle shadow */
+}
+
+/* Dark mode for formal consistency */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bs-primary-background: #1f2a44 !important; /* Dark navy background */
+    --bs-primary-foreground: #e5e7eb !important; /* Light gray for text */
+    --bs-accent-color: #4f78c9 !important; /* Softer blue for dark mode */
+    --bs-secondary-background: #2d3748 !important; /* Darker secondary background */
+    --bs-border-color: #4b5563 !important; /* Medium gray for borders */
+  }
+}
+
+/* Ensure dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark !important;
+  }
+}
+
+/* Base HTML and body styles */
+html,
+body {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body {
+  color: var(--bs-primary-foreground) !important;
+  background: var(--bs-primary-background) !important;
+  font-family: var(--bs-font-family-body) !important;
+  font-size: 1rem !important;
+  line-height: 1.7 !important; /* Slightly increased for readability */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+}
+
+/* Reset default margins and padding */
+* {
+  box-sizing: border-box !important;
+}
+
+/* Formal link styles */
+a {
+  color: var(--bs-accent-color) !important;
+  text-decoration: none !important;
+  transition: var(--bs-transition) !important;
+}
+
+a:hover {
+  color: var(--bs-primary-foreground) !important;
+  text-decoration: underline !important;
+}
+
+/* Typography for headings */
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+  font-family: var(--bs-font-family-heading) !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+/* Button styles */
+.btn {
+  font-family: var(--bs-font-family-body) !important;
+  font-weight: 600 !important;
+  transition: var(--bs-transition) !important;
+  border-radius: 0.375rem !important;
+  padding: 0.75rem 1.5rem !important;
+}
+
+.btn-primary {
+  background-color: var(--bs-accent-color) !important;
+  border-color: var(--bs-accent-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #002366 !important; /* Darker navy for hover */
+  border-color: #002366 !important;
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  border-color: var(--bs-accent-color) !important;
+  color: var(--bs-accent-color) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background-color: var(--bs-accent-color) !important;
+  border-color: var(--bs-accent-color) !important;
+  color: #ffffff !important;
+}
+
+.btn-danger {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+  background-color: #c82333 !important;
+  border-color: #c82333 !important;
+}
+
+/* Card styles */
+.card {
+  border-color: var(--bs-border-color) !important;
+  background-color: var(--bs-primary-background) !important;
+  color: var(--bs-primary-foreground) !important;
+  border-radius: 0.5rem !important;
+  transition: var(--bs-transition) !important;
+  box-shadow: var(--bs-shadow-sm) !important;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-header,
+.card-footer {
+  background-color: var(--bs-secondary-background) !important;
+  border-color: var(--bs-border-color) !important;
+}
+
+/* Form controls */
+.form-control {
+  font-family: var(--bs-font-family-body) !important;
+  font-weight: 400 !important;
+  border-color: var(--bs-border-color) !important;
+  background-color: var(--bs-primary-background) !important;
+  color: var(--bs-primary-foreground) !important;
+  border-radius: 0.375rem !important;
+  transition: var(--bs-transition) !important;
+  padding: 0.75rem !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bs-accent-color) !important;
+  box-shadow: 0 0 0 0.2rem rgba(var(--bs-accent-color-rgb), 0.2) !important;
+}
+
+.form-select {
+  border-radius: 0.375rem !important;
+  padding: 0.75rem !important;
+}
+
+/* Badge styles */
+.badge {
+  font-weight: 600 !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 0.25rem !important;
+}
+
+/* Navbar styles */
+.navbar {
+  background-color: var(--bs-primary-background) !important;
+  border-bottom: 1px solid var(--bs-border-color) !important;
+  box-shadow: var(--bs-shadow-sm) !important;
+}
+
+.navbar-brand {
+  font-family: var(--bs-font-family-heading) !important;
+  font-weight: 700 !important;
+}
+
+.nav-link {
+  font-weight: 600 !important;
+  color: var(--bs-primary-foreground) !important;
+}
+
+.nav-link:hover {
+  color: var(--bs-accent-color) !important;
+}
+
+/* Container styles */
+.container,
+.container-fluid {
+  padding-left: 2rem !important;
+  padding-right: 2rem !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container,
+  .container-fluid {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .btn {
+    padding: 0.5rem 1rem !important;
+  }
+
+  .card {
+    border-radius: 0.375rem !important;
+  }
+}
