@@ -47,19 +47,21 @@ export default function Header() {
 
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto align-items-start gap-2">
-            {user && ADMIN_EMAILS.includes(user.email || "") && (
-              <Link
-                href="/quan-tri"
-                className={`nav-link fw-medium ${
-                  isActive("/quan-tri")
-                    ? "text-decoration-underline text-accent-color"
-                    : ""
-                }`}
-                onClick={handleClose}
-              >
-                Quản Trị
-              </Link>
-            )}
+            {isAuthenticated &&
+              user &&
+              ADMIN_EMAILS.includes(user.email || "") && (
+                <Link
+                  href="/quan-tri"
+                  className={`nav-link fw-medium ${
+                    isActive("/quan-tri")
+                      ? "text-decoration-underline text-accent-color"
+                      : ""
+                  }`}
+                  onClick={handleClose}
+                >
+                  Quản Trị
+                </Link>
+              )}
             {isAuthenticated && (
               <Link
                 href="/ho-so"
