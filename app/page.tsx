@@ -1,7 +1,7 @@
 "use client";
 
 import { JSX, useEffect, useState } from "react";
-import { Container, Card, Row, Col, Button } from "react-bootstrap";
+import { Container, Card, Row, Col, Button, Modal } from "react-bootstrap";
 import { db } from "@/firebase/config";
 import { collection, getDocs } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
@@ -26,7 +26,7 @@ const categoryMap: Record<string, { label: string; icon: JSX.Element }> = {
   school: { label: "Học Đường", icon: <FontAwesomeIcon icon={faSchool} /> },
   family: { label: "Gia Đình", icon: <FontAwesomeIcon icon={faHome} /> },
   work: { label: "Công Sở", icon: <FontAwesomeIcon icon={faBriefcase} /> },
-  general: { label: "Chung", icon: <FontAwesomeIcon icon={faBook} /> },
+  general: { label: "Khác", icon: <FontAwesomeIcon icon={faBook} /> },
 };
 
 const ITEMS_PER_PAGE = 6;
@@ -35,6 +35,8 @@ export default function Home() {
   const [manners, setManners] = useState<Manner[]>([]);
   const [selected, setSelected] = useState<string>("all");
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedManner, setSelectedManner] = useState<Manner | null>(null);
 
   useEffect(() => {
     const fetchManners = async () => {
@@ -62,6 +64,16 @@ export default function Home() {
   const handleSelect = (category: string) => {
     setSelected(category);
     setCurrentPage(1);
+  };
+
+  const handleShowModal = (manner: Manner) => {
+    setSelectedManner(manner);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedManner(null);
   };
 
   return (
@@ -104,7 +116,11 @@ export default function Home() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="h-100 border-0 shadow-sm">
+                <Card
+                  className="h-100 border-0 shadow-sm"
+                  onClick={() => handleShowModal(manner)}
+                  style={{ cursor: "pointer" }}
+                >
                   <Card.Body className="p-4">
                     <Card.Title className="text-primary fw-bold fs-5 d-flex align-items-center gap-2">
                       {categoryMap[manner.category]?.icon || (
@@ -112,9 +128,6 @@ export default function Home() {
                       )}
                       {manner.title}
                     </Card.Title>
-                    <Card.Text className="text-muted mb-3">
-                      {manner.description}
-                    </Card.Text>
                     <span className="badge bg-accent-color text-white px-3 py-2">
                       {categoryMap[manner.category]?.label || "Không xác định"}
                     </span>
@@ -131,6 +144,32 @@ export default function Home() {
         totalPages={totalPages}
         onPageChange={(page) => setCurrentPage(page)}
       />
+
+      <Modal show={showModal} onHide={handleCloseModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {selectedManner ? (
+              <>
+                {selectedManner.title}
+                <span className="ms-2 badge bg-accent-color text-white">
+                  {categoryMap[selectedManner.category]?.label ||
+                    "Không xác định"}
+                </span>
+              </>
+            ) : (
+              "Không xác định"
+            )}
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>{selectedManner?.description || "Không có mô tả"}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

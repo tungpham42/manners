@@ -10,7 +10,7 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
+import { Container, Form, Button, Table, Card } from "react-bootstrap";
 import { useAdminGuard } from "@/hooks/useAdminGuard";
 import UserInfo from "@/components/UserInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -183,50 +183,60 @@ export default function DashboardPage() {
         </Card>
       </motion.div>
 
-      <Row>
-        {manners.map((manner) => (
-          <Col key={manner.id} md={6} lg={4} className="mb-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.3 }}
-            >
-              <Card className="h-100 shadow-sm border-0">
-                <Card.Body className="p-4">
-                  <Card.Title className="fw-bold fs-5">
-                    {manner.title}
-                  </Card.Title>
-                  <Card.Subtitle className="mb-3 text-muted">
-                    {categoryLabels[manner.category] || manner.category}
-                  </Card.Subtitle>
-                  <Card.Text className="text-muted">
-                    {manner.description}
-                  </Card.Text>
-                  <div className="d-flex gap-2">
-                    <Button
-                      size="sm"
-                      onClick={() => handleEdit(manner)}
-                      className="d-flex align-items-center gap-2 px-3 py-2 rounded-3"
-                    >
-                      <FontAwesomeIcon icon={faEdit} />
-                      Sửa
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="danger"
-                      onClick={() => handleDelete(manner.id)}
-                      className="d-flex align-items-center gap-2 px-3 py-2 rounded-3"
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                      Xóa
-                    </Button>
-                  </div>
-                </Card.Body>
-              </Card>
-            </motion.div>
-          </Col>
-        ))}
-      </Row>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Table striped bordered hover responsive className="shadow-sm">
+          <thead>
+            <tr>
+              <th>Tiêu đề</th>
+              <th>Phân loại</th>
+              <th>Mô tả</th>
+              <th>Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            {manners.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="text-center text-muted">
+                  Không có dữ liệu
+                </td>
+              </tr>
+            ) : (
+              manners.map((manner) => (
+                <tr key={manner.id}>
+                  <td>{manner.title}</td>
+                  <td>{categoryLabels[manner.category] || manner.category}</td>
+                  <td>{manner.description}</td>
+                  <td>
+                    <div className="d-flex gap-2">
+                      <Button
+                        size="sm"
+                        onClick={() => handleEdit(manner)}
+                        className="d-flex align-items-center gap-2 px-3 py-1 rounded-3"
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                        Sửa
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => handleDelete(manner.id)}
+                        className="d-flex align-items-center gap-2 px-3 py-1 rounded-3"
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                        Xóa
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </Table>
+      </motion.div>
     </Container>
   );
 }
