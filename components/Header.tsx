@@ -46,7 +46,7 @@ export default function Header() {
         </Navbar.Toggle>
 
         <Navbar.Collapse id="navbar-nav">
-          <Nav className="me-auto align-items-center gap-2">
+          <Nav className="me-auto align-items-start gap-2">
             {user && ADMIN_EMAILS.includes(user.email || "") && (
               <Link
                 href="/quan-tri"
@@ -73,53 +73,114 @@ export default function Header() {
                 Hồ Sơ
               </Link>
             )}
+            {isAuthenticated ? (
+              <Dropdown as={Nav.Item} className="d-lg-none mt-2">
+                <Dropdown.Toggle
+                  variant="link"
+                  id="user-dropdown"
+                  className="d-flex align-items-center text-primary-foreground text-decoration-none p-2 rounded hover-bg-secondary-background w-100"
+                >
+                  {user?.photoURL ? (
+                    <Image
+                      src={user.photoURL}
+                      alt="Ảnh đại diện"
+                      roundedCircle
+                      width={36}
+                      height={36}
+                      className="me-2 border border-2 border-accent-color"
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faUserCircle}
+                      size="2x"
+                      className="me-2"
+                    />
+                  )}
+                  <span className="fw-medium">
+                    {user?.displayName || user?.email}
+                  </span>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="border-0 shadow-sm rounded-3 w-100">
+                  <Dropdown.Header className="fw-medium text-muted">
+                    {user?.email}
+                  </Dropdown.Header>
+                  <Dropdown.Item
+                    onClick={() => {
+                      signOut(auth);
+                      handleClose();
+                    }}
+                    className="fw-medium d-flex align-items-center gap-2"
+                  >
+                    Đăng Xuất
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Nav.Item className="d-lg-none mt-2">
+                <Link
+                  href="/dang-nhap"
+                  className={`nav-link fw-medium ${
+                    isActive("/dang-nhap")
+                      ? "text-decoration-underline text-accent-color"
+                      : ""
+                  }`}
+                  onClick={handleClose}
+                >
+                  Đăng Nhập
+                </Link>
+              </Nav.Item>
+            )}
           </Nav>
 
+          {/* Dropdown for desktop view */}
           {isAuthenticated ? (
-            <Dropdown align="end" className="ms-2">
-              <Dropdown.Toggle
-                variant="link"
-                id="user-dropdown"
-                className="d-flex align-items-center text-primary-foreground text-decoration-none p-2 rounded hover-bg-secondary-background"
-              >
-                {user?.photoURL ? (
-                  <Image
-                    src={user.photoURL}
-                    alt="Ảnh đại diện"
-                    roundedCircle
-                    width={36}
-                    height={36}
-                    className="me-2 border border-2 border-accent-color"
-                  />
-                ) : (
-                  <FontAwesomeIcon
-                    icon={faUserCircle}
-                    size="2x"
-                    className="me-2"
-                  />
-                )}
-                <span className="fw-medium">
-                  {user?.displayName || user?.email}
-                </span>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu className="border-0 shadow-sm mt-2 rounded-3">
-                <Dropdown.Header className="fw-medium text-muted">
-                  {user?.email}
-                </Dropdown.Header>
-                <Dropdown.Item
-                  onClick={() => {
-                    signOut(auth);
-                    handleClose();
-                  }}
-                  className="fw-medium d-flex align-items-center gap-2"
+            <Nav className="d-none d-lg-flex ms-2">
+              <Dropdown as={Nav.Item}>
+                <Dropdown.Toggle
+                  variant="link"
+                  id="user-dropdown-desktop"
+                  className="d-flex align-items-center text-primary-foreground text-decoration-none p-2 rounded hover-bg-secondary-background"
                 >
-                  Đăng Xuất
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                  {user?.photoURL ? (
+                    <Image
+                      src={user.photoURL}
+                      alt="Ảnh đại diện"
+                      roundedCircle
+                      width={36}
+                      height={36}
+                      className="me-2 border border-2 border-accent-color"
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faUserCircle}
+                      size="2x"
+                      className="me-2"
+                    />
+                  )}
+                  <span className="fw-medium">
+                    {user?.displayName || user?.email}
+                  </span>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="border-0 shadow-sm mt-2 rounded-3">
+                  <Dropdown.Header className="fw-medium text-muted">
+                    {user?.email}
+                  </Dropdown.Header>
+                  <Dropdown.Item
+                    onClick={() => {
+                      signOut(auth);
+                      handleClose();
+                    }}
+                    className="fw-medium d-flex align-items-center gap-2"
+                  >
+                    Đăng Xuất
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Nav>
           ) : (
-            <Nav>
+            <Nav className="d-none d-lg-flex">
               <Link
                 href="/dang-nhap"
                 className={`btn btn-outline-primary fw-medium px-4 ${
