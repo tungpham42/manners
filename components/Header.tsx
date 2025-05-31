@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { Navbar, Nav, Container, Dropdown, Image } from "react-bootstrap";
@@ -13,9 +14,12 @@ import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 export default function Header() {
   const { user, isAuthenticated } = useAuth();
   const [expanded, setExpanded] = useState(false);
+  const pathname = usePathname();
 
   const handleToggle = () => setExpanded(!expanded);
   const handleClose = () => setExpanded(false);
+
+  const isActive = (href: string) => pathname === href;
 
   return (
     <Navbar
@@ -29,7 +33,9 @@ export default function Header() {
       <Container>
         <Link
           href="/"
-          className="navbar-brand fw-bold text-accent-color"
+          className={`navbar-brand fw-bold text-accent-color ${
+            isActive("/") ? "text-decoration-underline" : ""
+          }`}
           onClick={handleClose}
         >
           Phép Xã Giao
@@ -41,13 +47,14 @@ export default function Header() {
 
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto align-items-center gap-2">
-            <Link href="/" className="nav-link fw-medium" onClick={handleClose}>
-              Trang Chủ
-            </Link>
             {user && ADMIN_EMAILS.includes(user.email || "") && (
               <Link
                 href="/quan-tri"
-                className="nav-link fw-medium"
+                className={`nav-link fw-medium ${
+                  isActive("/quan-tri")
+                    ? "text-decoration-underline text-accent-color"
+                    : ""
+                }`}
                 onClick={handleClose}
               >
                 Quản Trị
@@ -55,11 +62,15 @@ export default function Header() {
             )}
             {isAuthenticated && (
               <Link
-                href="/them"
-                className="nav-link fw-medium"
+                href="/ho-so"
+                className={`nav-link fw-medium ${
+                  isActive("/ho-so")
+                    ? "text-decoration-underline text-accent-color"
+                    : ""
+                }`}
                 onClick={handleClose}
               >
-                Thêm Mới
+                Hồ Sơ
               </Link>
             )}
           </Nav>
@@ -111,7 +122,11 @@ export default function Header() {
             <Nav>
               <Link
                 href="/dang-nhap"
-                className="btn btn-outline-primary fw-medium px-4"
+                className={`btn btn-outline-primary fw-medium px-4 ${
+                  isActive("/dang-nhap")
+                    ? "border-accent-color text-accent-color"
+                    : ""
+                }`}
                 onClick={handleClose}
               >
                 Đăng Nhập

@@ -150,7 +150,6 @@ export default function AddNewPage() {
                   className="rounded-3"
                 />
               </Form.Group>
-              27{" "}
               <Form.Group className="mb-3">
                 <Form.Label className="fw-medium">Mô tả</Form.Label>
                 <Form.Control

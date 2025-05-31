@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Đối nhân xử thế - Thêm mới",
     description: "Thuật đối nhân xử thế, ứng xử trong cuộc sống",
-    url: "https://ungxu.soft.io.vn/them",
+    url: "https://ungxu.soft.io.vn/ho-so",
     siteName: "Đối nhân xử thế",
     images: [
       {

@@ -106,29 +106,33 @@ export default function Home() {
         ))}
       </div>
 
-      <Row>
+      <Row className="d-flex align-items-stretch">
         <AnimatePresence>
           {paginated.map((manner) => (
-            <Col key={manner.id} md={6} lg={4} className="mb-4">
+            <Col key={manner.id} md={6} lg={4} className="mb-4 d-flex">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
+                className="d-flex w-100"
               >
                 <Card
-                  className="h-100 border-0 shadow-sm"
+                  className="h-100 border-0 shadow-sm flex-fill"
                   onClick={() => handleShowModal(manner)}
                   style={{ cursor: "pointer" }}
                 >
-                  <Card.Body className="p-4">
+                  <Card.Body className="p-4 d-flex flex-column">
                     <Card.Title className="text-primary fw-bold fs-5 d-flex align-items-center gap-2">
                       {categoryMap[manner.category]?.icon || (
                         <FontAwesomeIcon icon={faBook} />
                       )}
                       {manner.title}
                     </Card.Title>
-                    <span className="badge bg-accent-color text-white px-3 py-2">
+                    <span
+                      className="badge bg-accent-color text-white px-3 py-2 mt-auto"
+                      style={{ width: "fit-content" }}
+                    >
                       {categoryMap[manner.category]?.label || "Không xác định"}
                     </span>
                   </Card.Body>
