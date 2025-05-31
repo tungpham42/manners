@@ -47,7 +47,7 @@ export default function Login() {
             </p>
             <Button
               onClick={handleLogin}
-              variant="danger"
+              variant="primary"
               className="d-flex align-items-center justify-content-center gap-2 w-100 p-2 rounded-3"
             >
               <FontAwesomeIcon icon={faGoogle} />
