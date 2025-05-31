@@ -28,7 +28,6 @@ import {
   faTrash,
   faTimes,
   faTag,
-  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
@@ -230,9 +229,6 @@ export default function DashboardPage() {
           <Form.Group className="d-flex align-items-center gap-2">
             <Form.Label className="mb-0">Tìm kiếm:</Form.Label>
             <InputGroup style={{ width: "300px" }}>
-              <InputGroup.Text>
-                <FontAwesomeIcon icon={faSearch} />
-              </InputGroup.Text>
               <Form.Control
                 type="text"
                 placeholder="Tìm theo tiêu đề hoặc mô tả"

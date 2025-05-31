@@ -19,14 +19,12 @@ export default function PaginationControls({
 }: PaginationControlsProps) {
   if (totalPages <= 1) return null;
 
-  // Generate pagination items with ellipsis for large page counts
   const getPageItems = () => {
     const items = [];
     const maxVisiblePages = 5;
     const ellipsis = <span className="pagination-ellipsis">...</span>;
 
     if (totalPages <= maxVisiblePages) {
-      // Show all pages if total is small
       for (let i = 1; i <= totalPages; i++) {
         items.push(
           <button
@@ -41,7 +39,6 @@ export default function PaginationControls({
         );
       }
     } else {
-      // Always show first page
       items.push(
         <button
           key={1}
@@ -54,12 +51,10 @@ export default function PaginationControls({
         </button>
       );
 
-      // Show ellipsis if current page is far from start
       if (currentPage > 3) {
         items.push(ellipsis);
       }
 
-      // Show pages around current page
       const startPage = Math.max(2, currentPage - 1);
       const endPage = Math.min(totalPages - 1, currentPage + 1);
 
@@ -77,12 +72,10 @@ export default function PaginationControls({
         );
       }
 
-      // Show ellipsis if current page is far from end
       if (currentPage < totalPages - 2) {
         items.push(ellipsis);
       }
 
-      // Always show last page
       items.push(
         <button
           key={totalPages}

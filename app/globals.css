@@ -1,39 +1,43 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lexend+Deca:wght@100..900&display=swap");
 
-/* Global styles for a vibrant, modern, and engaging look */
+/* Global styles with italic text, light blue accents, and emphasized headings */
 :root {
-  --bs-primary-background: #f8fafc !important; /* Light, airy background */
-  --bs-primary-foreground: #1e293b !important; /* Deep slate for text */
-  --bs-accent-color: #3b82f6 !important; /* Vibrant blue for accents */
-  --bs-secondary-background: #e2e8f0 !important; /* Soft gray for secondary elements */
-  --bs-border-color: #e5e7eb !important; /* Light gray for borders */
+  --bs-primary-background: #f8fafc !important;
+  --bs-primary-foreground: #1e293b !important;
+  --bs-accent-color: #3b82f6 !important;
+  --bs-accent-light: #93c5fd !important; /* Light blue accent */
+  --bs-emphasis-color: #1d4ed8 !important; /* Heading emphasis color */
+  --bs-secondary-background: #e2e8f0 !important;
+  --bs-border-color: #e5e7eb !important;
   --bs-font-family-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, sans-serif !important;
-  --bs-font-family-heading: "Lexend Deca", sans-serif !important; /* Bold, modern headings */
-  --bs-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Smooth, bouncy transitions */
-  --bs-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08) !important; /* Softer, modern shadow */
-  --bs-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12) !important; /* Elevated hover shadow */
+  --bs-font-family-heading: "Lexend Deca", sans-serif !important;
+  --bs-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  --bs-shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  --bs-shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
 }
 
-/* Dark mode for a sleek, modern contrast */
+/* Dark mode adjustments */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bs-primary-background: #1e293b !important; /* Dark slate background */
-    --bs-primary-foreground: #f1f5f9 !important; /* Light text for contrast */
-    --bs-accent-color: #60a5fa !important; /* Brighter blue for dark mode */
-    --bs-secondary-background: #334155 !important; /* Darker secondary background */
-    --bs-border-color: #4b5563 !important; /* Medium gray for borders */
+    --bs-primary-background: #1e293b !important;
+    --bs-primary-foreground: #f1f5f9 !important;
+    --bs-accent-color: #60a5fa !important;
+    --bs-accent-light: #93c5fd !important;
+    --bs-emphasis-color: #3b82f6 !important;
+    --bs-secondary-background: #334155 !important;
+    --bs-border-color: #4b5563 !important;
   }
 }
 
-/* Ensure dark mode compatibility */
+/* Dark mode compatibility */
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark !important;
   }
 }
 
-/* Base HTML and body styles */
+/* Base HTML and body styles with italic text */
 html,
 body {
   max-width: 100vw !important;
@@ -46,8 +50,9 @@ body {
   color: var(--bs-primary-foreground) !important;
   background: var(--bs-primary-background) !important;
   font-family: var(--bs-font-family-body) !important;
+  font-style: italic !important; /* Italic text throughout */
   font-size: 1rem !important;
-  line-height: 1.6 !important; /* Optimized for readability */
+  line-height: 1.6 !important;
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
 }
@@ -57,7 +62,7 @@ body {
   box-sizing: border-box !important;
 }
 
-/* Vibrant link styles */
+/* Link styles */
 a {
   color: var(--bs-accent-color) !important;
   text-decoration: none !important;
@@ -65,11 +70,11 @@ a {
 }
 
 a:hover {
-  color: #2563eb !important; /* Darker blue on hover */
+  color: var(--bs-emphasis-color) !important;
   text-decoration: underline !important;
 }
 
-/* Modern typography for headings */
+/* Emphasized headings with light blue accents */
 h1,
 .h1,
 h2,
@@ -84,14 +89,36 @@ h6,
 .h6 {
   font-family: var(--bs-font-family-heading) !important;
   font-weight: 700 !important;
+  font-style: normal !important; /* Non-italic headings */
   line-height: 1.3 !important;
-  color: var(--bs-primary-foreground) !important;
+  color: var(--bs-emphasis-color) !important;
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem !important;
 }
 
-/* Button styles with a modern, bold look */
+/* Underline effect for headings */
+h1::after,
+.h1::after,
+h2::after,
+.h2::after,
+h3::after,
+.h3::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--bs-accent-light), transparent);
+  border-radius: 3px;
+}
+
+/* Button styles with light blue accents */
 .btn {
   font-family: var(--bs-font-family-body) !important;
   font-weight: 500 !important;
+  font-style: italic !important;
   transition: var(--bs-transition) !important;
   border-radius: 0.5rem !important;
   padding: 0.75rem 1.75rem;
@@ -102,8 +129,8 @@ h6,
 .btn-primary {
   background: linear-gradient(
     135deg,
-    var(--bs-accent-color),
-    #2563eb
+    var(--bs-accent-light),
+    var(--bs-accent-color)
   ) !important;
   border: none !important;
   color: #ffffff !important;
@@ -112,36 +139,28 @@ h6,
 
 .btn-primary:hover,
 .btn-primary:focus {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
+  background: linear-gradient(
+    135deg,
+    var(--bs-accent-color),
+    var(--bs-emphasis-color)
+  ) !important;
   box-shadow: var(--bs-shadow-hover) !important;
 }
 
 .btn-outline-primary {
-  border-color: var(--bs-accent-color) !important;
+  border-color: var(--bs-accent-light) !important;
   color: var(--bs-accent-color) !important;
   background: transparent !important;
 }
 
 .btn-outline-primary:hover,
 .btn-outline-primary:focus {
-  background: var(--bs-accent-color) !important;
-  color: #ffffff !important;
+  background: var(--bs-accent-light) !important;
+  color: var(--bs-emphasis-color) !important;
   box-shadow: var(--bs-shadow-sm) !important;
 }
 
-.btn-danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626) !important;
-  border: none !important;
-  box-shadow: var(--bs-shadow-sm) !important;
-}
-
-.btn-danger:hover,
-.btn-danger:focus {
-  background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
-  box-shadow: var(--bs-shadow-hover) !important;
-}
-
-/* Card styles with modern, elevated design */
+/* Card styles with light blue accents */
 .card {
   border: none !important;
   background: var(--bs-primary-background) !important;
@@ -150,6 +169,7 @@ h6,
   transition: var(--bs-transition) !important;
   box-shadow: var(--bs-shadow-sm) !important;
   overflow: hidden !important;
+  border-left: 4px solid var(--bs-accent-light) !important;
 }
 
 .card:hover {
@@ -163,11 +183,12 @@ h6,
   border: none !important;
 }
 
-/* Form controls with sleek, modern styling */
+/* Form controls */
 .form-control,
 .form-select {
   font-family: var(--bs-font-family-body) !important;
   font-weight: 400 !important;
+  font-style: italic !important;
   border: 1px solid var(--bs-border-color) !important;
   background: var(--bs-primary-background) !important;
   color: var(--bs-primary-foreground) !important;
@@ -178,49 +199,29 @@ h6,
 
 .form-control:focus,
 .form-select:focus {
-  border-color: var(--bs-accent-color) !important;
-  box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+  border-color: var(--bs-accent-light) !important;
+  box-shadow: 0 0 0 0.25rem rgba(147, 197, 253, 0.25) !important;
 }
 
-/* Badge styles with bold, vibrant colors */
+/* Badge styles with light blue */
 .badge {
   font-weight: 500 !important;
+  font-style: italic !important;
   padding: 0.5rem 1rem !important;
   border-radius: 0.5rem !important;
-  background: var(--bs-accent-color) !important;
-  color: #ffffff !important;
+  background: var(--bs-accent-light) !important;
+  color: var(--bs-emphasis-color) !important;
 }
 
-/* Navbar styles with a modern, clean look */
-.navbar {
-  background: var(--bs-primary-background) !important;
-  border-bottom: 1px solid var(--bs-border-color) !important;
-  box-shadow: var(--bs-shadow-sm) !important;
-  padding: 1rem 0 !important;
+/* Modal styles */
+.modal-header {
+  background: var(--bs-accent-light) !important;
+  color: var(--bs-emphasis-color) !important;
+  border-bottom: 1px solid var(--bs-accent-color) !important;
 }
 
-.navbar-brand {
-  font-family: var(--bs-font-family-heading) !important;
-  font-weight: 700 !important;
-  font-size: 1.5rem !important;
-  color: var(--bs-accent-color) !important;
-}
-
-.nav-link {
-  font-weight: 500 !important;
-  color: var(--bs-primary-foreground) !important;
-  padding: 0.5rem 1rem !important;
-}
-
-.nav-link:hover {
-  color: var(--bs-accent-color) !important;
-}
-
-/* Container styles with generous spacing */
-.container,
-.container-fluid {
-  padding-left: 2.5rem !important;
-  padding-right: 2.5rem !important;
+.modal-title {
+  font-style: normal !important;
 }
 
 /* Pagination styles */
@@ -228,73 +229,111 @@ h6,
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  margin-top: 2rem;
-  padding: 0.5rem;
+  gap: 0.75rem;
+  margin-top: 3rem;
+  padding: 1rem;
 }
 
 .pagination-items {
   display: flex;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 .pagination-item {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.5rem;
-  height: 2.5rem;
-  padding: 0 0.75rem;
+  min-width: 2.75rem;
+  height: 2.75rem;
+  padding: 0 1rem;
   border: 1px solid var(--bs-border-color);
-  border-radius: 0.5rem;
-  background: var(--bs-secondary-background);
+  border-radius: 0.75rem;
+  background: transparent;
   color: var(--bs-primary-foreground);
   font-family: var(--bs-font-family-body);
   font-weight: 500;
-  font-size: 0.9rem;
+  font-style: italic;
+  font-size: 0.95rem;
   cursor: pointer;
   transition: var(--bs-transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.pagination-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bs-accent-light), transparent);
+  opacity: 0;
+  transition: var(--bs-transition);
+  z-index: -1;
 }
 
 .pagination-item:hover:not(.active) {
-  background: var(--bs-accent-color);
-  color: #ffffff;
-  border-color: var(--bs-accent-color);
+  color: var(--bs-emphasis-color);
+  border-color: var(--bs-accent-light);
   box-shadow: var(--bs-shadow-sm);
+}
+
+.pagination-item:hover:not(.active)::before {
+  opacity: 0.2;
 }
 
 .pagination-item.active {
-  background: var(--bs-accent-color);
-  color: #ffffff;
+  background: linear-gradient(
+    135deg,
+    var(--bs-accent-light),
+    var(--bs-accent-color)
+  );
+  color: white;
   border-color: var(--bs-accent-color);
   box-shadow: var(--bs-shadow-sm);
+  font-weight: 600;
   cursor: default;
-}
-
-.pagination-item:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
 }
 
 .pagination-nav {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   border: 1px solid var(--bs-border-color);
-  border-radius: 0.5rem;
-  background: var(--bs-secondary-background);
+  border-radius: 0.75rem;
+  background: transparent;
   color: var(--bs-primary-foreground);
   cursor: pointer;
   transition: var(--bs-transition);
+  font-style: italic;
+  position: relative;
+  overflow: hidden;
+}
+
+.pagination-nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bs-accent-light), transparent);
+  opacity: 0;
+  transition: var(--bs-transition);
+  z-index: -1;
 }
 
 .pagination-nav:hover:not(:disabled) {
-  background: var(--bs-accent-color);
-  color: #ffffff;
-  border-color: var(--bs-accent-color);
+  color: var(--bs-emphasis-color);
+  border-color: var(--bs-accent-light);
   box-shadow: var(--bs-shadow-sm);
+}
+
+.pagination-nav:hover:not(:disabled)::before {
+  opacity: 0.2;
 }
 
 .pagination-nav:disabled {
@@ -302,21 +341,35 @@ h6,
   cursor: not-allowed;
 }
 
-.pagination-nav:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
-}
-
 .pagination-ellipsis {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   color: var(--bs-primary-foreground);
   font-family: var(--bs-font-family-body);
   font-weight: 500;
-  font-size: 0.9rem;
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pagination-container {
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding: 0.5rem;
+  }
+
+  .pagination-item,
+  .pagination-nav,
+  .pagination-ellipsis {
+    min-width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.85rem;
+    border-radius: 0.5rem;
+  }
 }
 
 /* Responsive adjustments */
@@ -341,15 +394,15 @@ h6,
     font-size: 1.75rem !important;
   }
 
+  h1::after,
+  .h1::after {
+    bottom: -6px;
+    height: 2px;
+  }
+
   .pagination-item,
   .pagination-nav {
     min-width: 2rem;
-    height: 2rem;
-    font-size: 0.8rem;
-  }
-
-  .pagination-ellipsis {
-    width: 2rem;
     height: 2rem;
     font-size: 0.8rem;
   }

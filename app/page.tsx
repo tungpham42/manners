@@ -11,6 +11,7 @@ import {
   faHome,
   faBriefcase,
   faSchool,
+  faGlobe,
 } from "@fortawesome/free-solid-svg-icons";
 import PaginationControls from "@/components/PaginationControls";
 
@@ -22,7 +23,7 @@ type Manner = {
 };
 
 const categoryMap: Record<string, { label: string; icon: JSX.Element }> = {
-  all: { label: "Tất Cả", icon: <FontAwesomeIcon icon={faBook} /> },
+  all: { label: "Tất Cả", icon: <FontAwesomeIcon icon={faGlobe} /> },
   school: { label: "Học Đường", icon: <FontAwesomeIcon icon={faSchool} /> },
   family: { label: "Gia Đình", icon: <FontAwesomeIcon icon={faHome} /> },
   work: { label: "Công Sở", icon: <FontAwesomeIcon icon={faBriefcase} /> },
@@ -30,6 +31,7 @@ const categoryMap: Record<string, { label: string; icon: JSX.Element }> = {
 };
 
 const ITEMS_PER_PAGE = 12;
+const MAX_DESCRIPTION_LENGTH = 100; // Maximum characters for summary
 
 export default function Home() {
   const [manners, setManners] = useState<Manner[]>([]);
@@ -49,6 +51,14 @@ export default function Home() {
     };
     fetchManners();
   }, []);
+
+  // Function to truncate description for summary
+  const truncateDescription = (description: string) => {
+    if (description.length <= MAX_DESCRIPTION_LENGTH) {
+      return description;
+    }
+    return `${description.substring(0, MAX_DESCRIPTION_LENGTH)}...`;
+  };
 
   const filtered =
     selected === "all"
@@ -129,6 +139,9 @@ export default function Home() {
                       )}
                       {manner.title}
                     </Card.Title>
+                    <Card.Text className="my-3 text-muted">
+                      {truncateDescription(manner.description)}
+                    </Card.Text>
                     <span
                       className="badge bg-accent-color text-white px-3 py-2 mt-auto"
                       style={{ width: "fit-content" }}
@@ -149,12 +162,12 @@ export default function Home() {
         onPageChange={(page) => setCurrentPage(page)}
       />
 
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton>
+      <Modal show={showModal} onHide={handleCloseModal} centered size="lg">
+        <Modal.Header className="border-0 pb-0">
           <Modal.Title className="d-flex flex-column gap-2">
             {selectedManner ? (
               <>
-                <span>{selectedManner.title}</span>
+                <h3 className="fw-bold">{selectedManner.title}</h3>
                 <span
                   className="badge bg-accent-color text-white"
                   style={{ width: "fit-content" }}
@@ -168,10 +181,12 @@ export default function Home() {
             )}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ whiteSpace: "pre-wrap" }}>
-          {selectedManner?.description || "Không có mô tả"}
+        <Modal.Body className="pt-0" style={{ whiteSpace: "pre-wrap" }}>
+          <div className="py-3">
+            {selectedManner?.description || "Không có mô tả"}
+          </div>
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="border-0">
           <Button variant="secondary" onClick={handleCloseModal}>
             Đóng
           </Button>
