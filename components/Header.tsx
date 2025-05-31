@@ -1,46 +1,46 @@
 "use client";
 
+import { useState } from "react";
+import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { Navbar, Nav, Container, Dropdown, Image } from "react-bootstrap";
-import { useEffect, useState } from "react";
 import { auth } from "@/firebase/config";
-import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { signOut } from "firebase/auth";
 import { ADMIN_EMAILS } from "@/constants/admins";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>(null);
+  const { user, isAuthenticated } = useAuth();
   const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, setUser);
-    return () => unsubscribe();
-  }, []);
 
   const handleToggle = () => setExpanded(!expanded);
   const handleClose = () => setExpanded(false);
 
   return (
     <Navbar
-      bg="light"
+      bg="primary-background"
       variant="light"
       expand="lg"
       expanded={expanded}
       onToggle={handleToggle}
-      className="shadow-sm"
+      className="shadow-sm py-3"
     >
       <Container>
         <Link
           href="/"
-          className="navbar-brand fw-bold text-primary"
+          className="navbar-brand fw-bold text-accent-color"
           onClick={handleClose}
         >
           Phép Xã Giao
         </Link>
 
-        <Navbar.Toggle aria-controls="navbar-nav" />
+        <Navbar.Toggle aria-controls="navbar-nav" className="border-0">
+          <span className="navbar-toggler-icon"></span>
+        </Navbar.Toggle>
 
         <Navbar.Collapse id="navbar-nav">
-          <Nav className="me-auto">
+          <Nav className="me-auto align-items-center gap-2">
             <Link href="/" className="nav-link fw-medium" onClick={handleClose}>
               Trang Chủ
             </Link>
@@ -53,40 +53,55 @@ export default function Header() {
                 Quản Trị
               </Link>
             )}
+            {isAuthenticated && (
+              <Link
+                href="/them"
+                className="nav-link fw-medium"
+                onClick={handleClose}
+              >
+                Thêm Mới
+              </Link>
+            )}
           </Nav>
 
-          {user ? (
-            <Dropdown align="end">
+          {isAuthenticated ? (
+            <Dropdown align="end" className="ms-2">
               <Dropdown.Toggle
                 variant="link"
                 id="user-dropdown"
-                className="d-flex align-items-center text-dark text-decoration-none"
+                className="d-flex align-items-center text-primary-foreground text-decoration-none p-2 rounded hover-bg-secondary-background"
               >
-                {user.photoURL && (
+                {user?.photoURL ? (
                   <Image
                     src={user.photoURL}
                     alt="Ảnh đại diện"
                     roundedCircle
-                    width={32}
-                    height={32}
-                    className="me-2 border"
+                    width={36}
+                    height={36}
+                    className="me-2 border border-2 border-accent-color"
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faUserCircle}
+                    size="2x"
+                    className="me-2"
                   />
                 )}
                 <span className="fw-medium">
-                  {user.displayName || user.email}
+                  {user?.displayName || user?.email}
                 </span>
               </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Header className="fw-medium">
-                  {user.email}
+              <Dropdown.Menu className="border-0 shadow-sm mt-2 rounded-3">
+                <Dropdown.Header className="fw-medium text-muted">
+                  {user?.email}
                 </Dropdown.Header>
                 <Dropdown.Item
                   onClick={() => {
                     signOut(auth);
                     handleClose();
                   }}
-                  className="fw-medium"
+                  className="fw-medium d-flex align-items-center gap-2"
                 >
                   Đăng Xuất
                 </Dropdown.Item>
@@ -96,7 +111,7 @@ export default function Header() {
             <Nav>
               <Link
                 href="/dang-nhap"
-                className="nav-link fw-medium text-primary"
+                className="btn btn-outline-primary fw-medium px-4"
                 onClick={handleClose}
               >
                 Đăng Nhập

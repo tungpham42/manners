@@ -66,13 +66,19 @@ export default function Home() {
 
   return (
     <Container className="my-5">
-      <h1 className="text-center mb-4 fw-bold">
-        <FontAwesomeIcon icon={faBook} className="me-2" />
-        Phép Đối Nhân Xử Thế
-      </h1>
-      <p className="text-center text-muted mb-5 fs-5">
-        Tìm hiểu các quy tắc ứng xử đúng mực trong các bối cảnh xã hội.
-      </p>
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className="text-center mb-3 fw-bold fs-2">
+          <FontAwesomeIcon icon={faBook} className="me-2 text-accent-color" />
+          Phép Đối Nhân Xử Thế
+        </h1>
+        <p className="text-center text-muted mb-5 fs-5">
+          Khám phá các quy tắc ứng xử tinh tế cho mọi hoàn cảnh xã hội.
+        </p>
+      </motion.div>
 
       <div className="d-flex justify-content-center mb-5 flex-wrap gap-3">
         {Object.entries(categoryMap).map(([key, { label, icon }]) => (
@@ -80,7 +86,7 @@ export default function Home() {
             key={key}
             onClick={() => handleSelect(key)}
             variant={selected === key ? "primary" : "outline-primary"}
-            className="fw-medium d-flex align-items-center gap-2 px-4 py-2"
+            className="fw-medium d-flex align-items-center gap-2 px-4 py-2 rounded-3 shadow-sm"
           >
             {icon}
             {label}
@@ -93,23 +99,23 @@ export default function Home() {
           {paginated.map((manner) => (
             <Col key={manner.id} md={6} lg={4} className="mb-4">
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="h-100 shadow-sm border-0">
-                  <Card.Body>
-                    <Card.Title className="text-primary fw-semibold d-flex align-items-center gap-2">
+                <Card className="h-100 border-0 shadow-sm">
+                  <Card.Body className="p-4">
+                    <Card.Title className="text-primary fw-bold fs-5 d-flex align-items-center gap-2">
                       {categoryMap[manner.category]?.icon || (
                         <FontAwesomeIcon icon={faBook} />
                       )}
                       {manner.title}
                     </Card.Title>
-                    <Card.Text className="text-muted">
+                    <Card.Text className="text-muted mb-3">
                       {manner.description}
                     </Card.Text>
-                    <span className="badge bg-primary text-white">
+                    <span className="badge bg-accent-color text-white px-3 py-2">
                       {categoryMap[manner.category]?.label || "Không xác định"}
                     </span>
                   </Card.Body>

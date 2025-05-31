@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Đối nhân xử thế - Quản trị",
+  title: "Đối nhân xử thế - Thêm mới",
   description: "Thuật đối nhân xử thế, ứng xử trong cuộc sống",
   openGraph: {
-    title: "Đối nhân xử thế - Quản trị",
+    title: "Đối nhân xử thế - Thêm mới",
     description: "Thuật đối nhân xử thế, ứng xử trong cuộc sống",
-    url: "https://ungxu.soft.io.vn/quan-tri",
+    url: "https://ungxu.soft.io.vn/them",
     siteName: "Đối nhân xử thế",
     images: [
       {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function DashboardLayout({ children }: { children: ReactNode }) {
+export default function AddLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="vi">
       <body>{children}</body>

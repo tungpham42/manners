@@ -16,19 +16,21 @@ export default function UserInfo() {
   if (!user) return null;
 
   return (
-    <div className="d-flex align-items-center gap-2">
+    <div className="d-flex align-items-center gap-3 p-2 rounded bg-secondary-background">
       {user.photoURL && (
         <Image
           src={user.photoURL}
           alt="Ảnh đại diện"
           roundedCircle
-          width={40}
-          height={40}
-          className="border"
+          width={48}
+          height={48}
+          className="border border-2 border-accent-color"
         />
       )}
       <div>
-        <div className="fw-medium">{user.displayName || "Người dùng"}</div>
+        <div className="fw-semibold fs-6">
+          {user.displayName || "Người dùng"}
+        </div>
         <div className="text-muted small">{user.email}</div>
       </div>
     </div>

@@ -9,9 +9,11 @@ import {
   deleteDoc,
   updateDoc,
   doc,
+  query,
+  where,
 } from "firebase/firestore";
 import { Container, Form, Button, Row, Col, Card } from "react-bootstrap";
-import { useAdminGuard } from "@/hooks/useAdminGuard";
+import { useAuth } from "@/hooks/useAuth";
 import UserInfo from "@/components/UserInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -28,6 +30,7 @@ type Manner = {
   title: string;
   description: string;
   category: string;
+  userId: string;
 };
 
 const categoryLabels: { [key: string]: string } = {
@@ -37,7 +40,8 @@ const categoryLabels: { [key: string]: string } = {
   general: "Khác",
 };
 
-export default function DashboardPage() {
+export default function AddNewPage() {
+  const { user, loading: authLoading } = useAuth();
   const [manners, setManners] = useState<Manner[]>([]);
   const [form, setForm] = useState({
     title: "",
@@ -47,7 +51,10 @@ export default function DashboardPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
 
   const fetchManners = async () => {
-    const snapshot = await getDocs(collection(db, "manners"));
+    if (!user) return;
+
+    const q = query(collection(db, "manners"), where("userId", "==", user.uid));
+    const snapshot = await getDocs(q);
     const data = snapshot.docs.map(
       (doc) => ({ id: doc.id, ...doc.data() } as Manner)
     );
@@ -56,21 +63,34 @@ export default function DashboardPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!user) return;
+
     if (editingId) {
-      await updateDoc(doc(db, "manners", editingId), form);
+      await updateDoc(doc(db, "manners", editingId), {
+        ...form,
+        userId: user.uid,
+      });
     } else {
-      await addDoc(collection(db, "manners"), form);
+      await addDoc(collection(db, "manners"), {
+        ...form,
+        userId: user.uid,
+      });
     }
     resetForm();
     fetchManners();
   };
 
   const handleDelete = async (id: string) => {
+    const manner = manners.find((m) => m.id === id);
+    if (manner?.userId !== user?.uid) return;
+
     await deleteDoc(doc(db, "manners", id));
     fetchManners();
   };
 
   const handleEdit = (manner: Manner) => {
+    if (manner.userId !== user?.uid) return;
+
     setForm({
       title: manner.title,
       description: manner.description,
@@ -85,14 +105,17 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    fetchManners();
-  }, []);
+    if (user) {
+      fetchManners();
+    } // eslint-disable-next-line
+  }, [user]);
 
-  const loading = useAdminGuard();
-  if (loading)
+  if (authLoading)
+    return <p className="text-center fs-5 text-muted">Đang tải dữ liệu...</p>;
+  if (!user)
     return (
       <p className="text-center fs-5 text-muted">
-        Đang kiểm tra quyền truy cập...
+        Vui lòng đăng nhập để tiếp tục
       </p>
     );
 
@@ -106,7 +129,7 @@ export default function DashboardPage() {
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h2 className="fw-bold fs-3">
             <FontAwesomeIcon icon={faTag} className="me-2 text-accent-color" />
-            Quản Trị - Phép Xã Giao
+            Quản Lý Phép Xã Giao
           </h2>
           <UserInfo />
         </div>
@@ -207,6 +230,7 @@ export default function DashboardPage() {
                       size="sm"
                       onClick={() => handleEdit(manner)}
                       className="d-flex align-items-center gap-2 px-3 py-2 rounded-3"
+                      disabled={manner.userId !== user.uid}
                     >
                       <FontAwesomeIcon icon={faEdit} />
                       Sửa
@@ -216,6 +240,7 @@ export default function DashboardPage() {
                       variant="danger"
                       onClick={() => handleDelete(manner.id)}
                       className="d-flex align-items-center gap-2 px-3 py-2 rounded-3"
+                      disabled={manner.userId !== user.uid}
                     >
                       <FontAwesomeIcon icon={faTrash} />
                       Xóa
