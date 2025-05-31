@@ -10,7 +10,15 @@ import {
   updateDoc,
   doc,
 } from "firebase/firestore";
-import { Container, Form, Button, Table, Card } from "react-bootstrap";
+import {
+  Container,
+  Form,
+  Button,
+  Table,
+  Card,
+  Pagination,
+  InputGroup,
+} from "react-bootstrap";
 import { useAdminGuard } from "@/hooks/useAdminGuard";
 import UserInfo from "@/components/UserInfo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,6 +28,7 @@ import {
   faTrash,
   faTimes,
   faTag,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
@@ -45,6 +54,10 @@ export default function DashboardPage() {
     category: "general",
   });
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const fetchManners = async () => {
     const snapshot = await getDocs(collection(db, "manners"));
@@ -52,6 +65,7 @@ export default function DashboardPage() {
       (doc) => ({ id: doc.id, ...doc.data() } as Manner)
     );
     setManners(data);
+    setCurrentPage(1); // Reset to first page when data changes
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -82,6 +96,30 @@ export default function DashboardPage() {
   const resetForm = () => {
     setForm({ title: "", description: "", category: "general" });
     setEditingId(null);
+  };
+
+  // Search and filter logic
+  const filteredManners = manners.filter(
+    (manner) =>
+      manner.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      manner.description.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = filteredManners.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredManners.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleItemsPerPageChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setItemsPerPage(Number(e.target.value));
+    setCurrentPage(1); // Reset to first page when items per page changes
   };
 
   useEffect(() => {
@@ -188,6 +226,42 @@ export default function DashboardPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
+        <div className="d-flex justify-content-between align-items-center mb-3">
+          <Form.Group className="d-flex align-items-center gap-2">
+            <Form.Label className="mb-0">Tìm kiếm:</Form.Label>
+            <InputGroup style={{ width: "300px" }}>
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faSearch} />
+              </InputGroup.Text>
+              <Form.Control
+                type="text"
+                placeholder="Tìm theo tiêu đề hoặc mô tả"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1); // Reset to first page on search
+                }}
+                className="rounded-3"
+              />
+            </InputGroup>
+          </Form.Group>
+          <Form.Group>
+            <Form.Label>Số mục mỗi trang:</Form.Label>
+            <Form.Select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              style={{ width: "80px" }}
+            >
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="20">20</option>
+            </Form.Select>
+          </Form.Group>
+          <div>
+            Trang {currentPage} / {totalPages}
+          </div>
+        </div>
+
         <Table striped bordered hover responsive className="shadow-sm">
           <thead>
             <tr>
@@ -198,14 +272,14 @@ export default function DashboardPage() {
             </tr>
           </thead>
           <tbody>
-            {manners.length === 0 ? (
+            {currentItems.length === 0 ? (
               <tr>
                 <td colSpan={4} className="text-center text-muted">
                   Không có dữ liệu
                 </td>
               </tr>
             ) : (
-              manners.map((manner) => (
+              currentItems.map((manner) => (
                 <tr key={manner.id}>
                   <td>{manner.title}</td>
                   <td>{categoryLabels[manner.category] || manner.category}</td>
@@ -236,6 +310,26 @@ export default function DashboardPage() {
             )}
           </tbody>
         </Table>
+
+        <Pagination className="justify-content-center mt-3">
+          <Pagination.Prev
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+          {Array.from({ length: totalPages }, (_, index) => (
+            <Pagination.Item
+              key={index + 1}
+              active={index + 1 === currentPage}
+              onClick={() => handlePageChange(index + 1)}
+            >
+              {index + 1}
+            </Pagination.Item>
+          ))}
+          <Pagination.Next
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
       </motion.div>
     </Container>
   );

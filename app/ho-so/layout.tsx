@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Đối nhân xử thế - Thêm mới",
+  title: "Đối nhân xử thế - Hồ Sơ",
   description: "Thuật đối nhân xử thế, ứng xử trong cuộc sống",
   openGraph: {
-    title: "Đối nhân xử thế - Thêm mới",
+    title: "Đối nhân xử thế - Hồ Sơ",
     description: "Thuật đối nhân xử thế, ứng xử trong cuộc sống",
     url: "https://ungxu.soft.io.vn/ho-so",
     siteName: "Đối nhân xử thế",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AddLayout({ children }: { children: ReactNode }) {
+export default function ProfileLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="vi">
       <body>{children}</body>

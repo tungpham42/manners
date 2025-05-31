@@ -29,7 +29,7 @@ const categoryMap: Record<string, { label: string; icon: JSX.Element }> = {
   general: { label: "Khác", icon: <FontAwesomeIcon icon={faBook} /> },
 };
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 12;
 
 export default function Home() {
   const [manners, setManners] = useState<Manner[]>([]);
@@ -151,11 +151,14 @@ export default function Home() {
 
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>
+          <Modal.Title className="d-flex flex-column gap-2">
             {selectedManner ? (
               <>
-                {selectedManner.title}
-                <span className="ms-2 badge bg-accent-color text-white">
+                <span>{selectedManner.title}</span>
+                <span
+                  className="badge bg-accent-color text-white"
+                  style={{ width: "fit-content" }}
+                >
                   {categoryMap[selectedManner.category]?.label ||
                     "Không xác định"}
                 </span>
@@ -165,8 +168,8 @@ export default function Home() {
             )}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>{selectedManner?.description || "Không có mô tả"}</p>
+        <Modal.Body style={{ whiteSpace: "pre-wrap" }}>
+          {selectedManner?.description || "Không có mô tả"}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
