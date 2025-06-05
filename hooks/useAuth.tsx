@@ -14,7 +14,7 @@ export function useAuth() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
-        router.push("/dang-nhap");
+        router.push("/");
         setIsAuthenticated(false);
       } else {
         setUser(currentUser);
